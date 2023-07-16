@@ -4,7 +4,9 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.exceptions import AuthenticationFailed
+import jwt, datetime
 
 from .models import User
 from .serializers import *
@@ -12,40 +14,60 @@ from .serializers import *
 # Create your views here.
 
 
-def login_view(request):
-    if request.method == "POST":
-        # attempt the user login
-        email = request.POST["email"]
-        password = request.POST["password"]
-        user = authenticate(request, username=email, password=password)
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
-        if user is not None:
-            login(request, user)
-            # return the home page of the app
-            # like return httpresponse('url name')
-            return JsonResponse({"login": "login sucessful"})
 
-        else:
-            # unsucessful attempt
-            # return same page with error message
-            return JsonResponse({"login": "login unsucessful"})
+class LoginView(APIView):
+    def post(self, request):
+        email = request.data["email"]
+        password = request.data["password"]
 
-    return render(request, "login.html")
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            raise AuthenticationFailed("user not found")
+
+        if not user.check_password(password):
+            raise AuthenticationFailed("Incorrect password")
+
+        payload = {
+            "id": user.id,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            "iat": datetime.datetime.utcnow(),
+        }
+
+        token = jwt.encode(payload, "secret", algorithm="HS256")
+
+        response = Response()
+
+        response.set_cookie(key="jwt", value=token, httponly=True)
+        response.data = {"jwt": token,
+                         "name":user.name}
+        
+        return response
 
 
 class UserView(APIView):
     def get(self, request):
-        output = [
-            {
-                "username": output.username,
-                "id": output.id,
-                "email": output.email,
-                "first_name": output.first_name,
-                "last_name": output.last_name,
-            }
-            for output in User.objects.all()
-        ]
-        return Response(output)
+        token = request.COOKIES.get("jwt")
+
+        if not token:
+            raise AuthenticationFailed("unauthenticated")
+
+        try:
+            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        user = User.objects.get(id=payload["id"])
+        serializer = UserSerializer(user)
+
+        return Response(serializer.data)
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -53,35 +75,42 @@ class UserView(APIView):
             serializer.save()
         return Response(serializer.data)
 
+
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response()
+        response.delete_cookie("jwt")
+        response.data = {"message": "success"}
+        return response
+
+
 class ProductView(APIView):
-    def get(self,request):
+    def get(self, request):
         output = [
             {
-                "listed_by":output.listed_by.id,
-                "name":output.name,
-                "category":output.category.category_name
+                "listed_by": output.listed_by.id,
+                "name": output.name,
+                "category": output.category.category_name,
             }
             for output in Product.objects.all()
         ]
         return Response(output)
-    
-    def post(self,request):
+
+    def post(self, request):
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
         return Response(serializer.data)
 
+
 class CategoryView(APIView):
-    def get(self,request):
+    def get(self, request):
         output = [
-            {
-                "category_name": output.category_name 
-            }
-            for output in Category.objects.all()
+            {"category_name": output.category_name} for output in Category.objects.all()
         ]
         return Response(output)
 
-    def post(self,request):
+    def post(self, request):
         serializer = CategorySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

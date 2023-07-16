@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'c2c',
+    'c2c.apps.C2CConfig',
     'rest_framework',
     'corsheaders',
     'django.contrib.admin',
@@ -63,7 +63,8 @@ REST_FRAMEWORK = {
     ]
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True 
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'c2cedom.urls'
 
