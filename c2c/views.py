@@ -47,7 +47,7 @@ class LoginView(APIView):
         response = Response()
 
         response.set_cookie(key="jwt", value=token, httponly=True)
-        response.data = {"jwt": token, "name": user.name}
+        response.data = {"jwt": token}
 
         return response
 
@@ -106,6 +106,16 @@ class ProductView(APIView):
         if not token:
             raise AuthenticationFailed("unauthenticated")
 
+        try:
+            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("Unauthenticated!")
+
+        user = User.objects.get(id=payload["id"])
+
+        user_id = user.id        
+        request.data["listed_by"] =user_id
+
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
@@ -117,7 +127,8 @@ class ProductView(APIView):
 class CategoryView(APIView):
     def get(self, request):
         output = [
-            {"id":output.id,"category_name": output.category_name} for output in Category.objects.all()
+            {"id": output.id, "category_name": output.category_name}
+            for output in Category.objects.all()
         ]
         return Response(output)
 
