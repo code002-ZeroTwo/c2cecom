@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.parsers import MultiPartParser, FormParser
 import jwt, datetime
 
 from .models import User
@@ -46,9 +47,8 @@ class LoginView(APIView):
         response = Response()
 
         response.set_cookie(key="jwt", value=token, httponly=True)
-        response.data = {"jwt": token,
-                         "name":user.name}
-        
+        response.data = {"jwt": token, "name": user.name}
+
         return response
 
 
@@ -85,28 +85,39 @@ class LogoutView(APIView):
 
 
 class ProductView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
     def get(self, request):
         output = [
             {
                 "listed_by": output.listed_by.id,
                 "name": output.name,
                 "category": output.category.category_name,
+                "price": output.price,
+                "description": output.description,
+                "image": output.image,
             }
             for output in Product.objects.all()
         ]
         return Response(output)
 
     def post(self, request):
+        token = request.COOKIES.get("jwt")
+        if not token:
+            raise AuthenticationFailed("unauthenticated")
+
         serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
-        return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryView(APIView):
     def get(self, request):
         output = [
-            {"category_name": output.category_name} for output in Category.objects.all()
+            {"id":output.id,"category_name": output.category_name} for output in Category.objects.all()
         ]
         return Response(output)
 

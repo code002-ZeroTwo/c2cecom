@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
+
+def upload_to(instance,filename):
+    return 'posts/{filename}'.format(filename=filename)
+
 
 # Create your models here.
 
@@ -22,10 +27,10 @@ class Category(models.Model):
 
 class Product(models.Model):
     listed_by = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="product"
+        User, on_delete=models.CASCADE,to_field="id", related_name="product"
     )
     name = models.CharField(max_length=64)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category,to_field="id", on_delete=models.CASCADE)
     price = models.IntegerField()
     description = models.CharField(max_length=1064)
-    image = models.ImageField()
+    image = models.ImageField(_("Image"), upload_to=upload_to)

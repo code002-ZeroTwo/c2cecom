@@ -58,3 +58,9 @@ yarn-error.log*
 /*.log
 logs
 *.md
+
+# media files
+/media
+
+# migrations folder
+/c2c/migrations
