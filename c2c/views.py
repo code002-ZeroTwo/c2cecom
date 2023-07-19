@@ -1,3 +1,4 @@
+import base64
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
@@ -7,6 +8,7 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import renderers
 import jwt, datetime
 
 from .models import User
@@ -88,17 +90,17 @@ class ProductView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
-        output = [
-            {
-                "listed_by": output.listed_by.id,
-                "name": output.name,
-                "category": output.category.category_name,
-                "price": output.price,
-                "description": output.description,
-                "image": output.image,
-            }
-            for output in Product.objects.all()
-        ]
+
+        output = [{
+            "product_id":product.id,
+            "listed_by":product.listed_by.username,
+            "name":product.name,
+            "category":product.category.category_name,
+            "price":product.price,
+            "description":product.description,
+            "image":base64.b64encode(product.image.read())
+        } for product in Product.objects.all()]
+
         return Response(output)
 
     def post(self, request):
@@ -113,8 +115,8 @@ class ProductView(APIView):
 
         user = User.objects.get(id=payload["id"])
 
-        user_id = user.id        
-        request.data["listed_by"] =user_id
+        user_id = user.id
+        request.data["listed_by"] = user_id
 
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):

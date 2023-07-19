@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import { useState, useEffect } from "react";
 import Product from "./components/Product";
+import EachProduct from "./components/EachProduct";
+
 
 function App() {
   const [name, setName] = useState("");
@@ -32,6 +34,7 @@ function App() {
             <Route path="/login" Component={() => <Login setName={setName}/>} />
             <Route path="/register" Component={Register} />
             <Route path="/list" Component={Product} />
+            <Route path="/products/:productID" Component={EachProduct}/>
           </Routes>
         </main>
       </BrowserRouter>

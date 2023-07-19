@@ -26,6 +26,7 @@ const Login = (props) => {
     })
 
     const data = await getdata.json();
+    console.log(data);
     props.setName(data.name);
     
 
