@@ -98,6 +98,7 @@ class ProductView(APIView):
             "category":product.category.category_name,
             "price":product.price,
             "description":product.description,
+            "quantity":product.quantity,
             "image":base64.b64encode(product.image.read())
         } for product in Product.objects.all()]
 

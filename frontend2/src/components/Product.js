@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 export default function Product() {
   const [productname, setProductName] = useState("");
   const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [category, setCategory] = useState([]);
@@ -37,6 +38,7 @@ export default function Product() {
     formData.append("category", inputcategory);
     formData.append("price", price);
     formData.append("description", description);
+    formData.append("quantity", quantity);
     formData.append("image", image);
 
     const response = await fetch("http://localhost:8000/product", {
@@ -93,6 +95,13 @@ export default function Product() {
           type="text"
           placeholder="Product Description"
           onChange={(e) => setDescription(e.target.value)}
+          className="InputField"
+        />
+        <br />
+        <input
+          type="number"
+          placeholder="Product Quantity"
+          onChange={(e) => setQuantity(e.target.value)}
           className="InputField"
         />
         <br />

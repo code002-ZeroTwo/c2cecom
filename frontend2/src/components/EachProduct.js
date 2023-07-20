@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import ReactModal from "react-modal";
 import Popup from "./Popup";
 
 const EachProduct = (props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [buyornot, setBuyornot] = useState("");
+  const [showmodal, setShowModal] = useState(false);
+
   const location = useLocation();
   const productData = location.state;
   console.log(productData);
+
+  useEffect(() => {
+    if (productData.quantity > 0) {
+      setBuyornot("Buy");
+      setShowModal(true);
+    } else {
+      setBuyornot("Out of Stock");
+      setShowModal(false);
+    }
+  }, []);
 
   const decodedImage = (codedval) => {
     const decoded = atob(codedval);
@@ -40,24 +53,30 @@ const EachProduct = (props) => {
             <p>Category: {productData.category}</p>
             <p>Price: {productData.price}</p>
             <p>listed_by: {productData.listed_by}</p>
+            <p>Quantity Availiable: {productData.quantity}</p>
           </div>
         </div>
       </div>
       <div>
         <button className="Buy button-34 parentbutton" onClick={setIsOpen}>
-          Buy it
+          {buyornot}
         </button>
-        <ReactModal
-          isOpen={isOpen}
-          contentLabel="Buy Sell"
-          onRequestClose={() => setIsOpen(false)}
-          className="custom-modal"
-        >
-          <Popup />
-          <button onClick={() => setIsOpen(false)} className="button-33 parentbutton xpos">
-            X
-          </button>
-        </ReactModal>
+        {showmodal && (
+          <ReactModal
+            isOpen={isOpen}
+            contentLabel="Buy Sell"
+            onRequestClose={() => setIsOpen(false)}
+            className="custom-modal"
+          >
+            <Popup />
+            <button
+              onClick={() => setIsOpen(false)}
+              className="button-33 parentbutton xpos"
+            >
+              X
+            </button>
+          </ReactModal>
+        )}
       </div>
     </>
   );

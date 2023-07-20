@@ -14,7 +14,7 @@ function Register() {
     await fetch("http://localhost:8000/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email , password,username}),
+      body: JSON.stringify({ name, email, password, username }),
     });
 
     setNavigate(true);
@@ -51,6 +51,18 @@ function Register() {
             className="form-control"
             placeholder="username"
             onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <input
+            type="number"
+            name="phone"
+            pattern="^(01|9[78]\d)-\d{3}-\d{4}$"
+            className="form-control"
+            placeholder="Phone Number"
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
 

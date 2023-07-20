@@ -29,7 +29,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Nav name={content.username} setName={setName} />
+        <Nav name={name} setName={setName} />
         <main className="form-signin">
           <Routes>
             <Route path="/" Component={() => <Home name={name} />} />

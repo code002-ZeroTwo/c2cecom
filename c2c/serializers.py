@@ -7,7 +7,7 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id','name','email','password','username']
+        fields = ['id','name','email','password','username','phone']
         extra_kwargs = {
             'password':{'write_only':True}
         }
@@ -28,4 +28,4 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id','listed_by','name','category','price','description','image']
+        fields = ['id','listed_by','name','category','price','description','quantity','image']
