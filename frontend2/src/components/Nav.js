@@ -37,6 +37,11 @@ const Nav = (props) => {
             List New 
           </Link>
         </li>
+        <li>
+          <Link to="/profile" className="nav-link">
+            Profile
+          </Link>
+        </li>
         <li className="nav-item active">
           <Link to="/login" className="nav-link" onClick={logout}>
             Logout

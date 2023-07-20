@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import { useState, useEffect } from "react";
 import Product from "./components/Product";
 import EachProduct from "./components/EachProduct";
+import Profile from "./components/Profile";
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
             <Route path="/register" Component={Register} />
             <Route path="/list" Component={Product} />
             <Route path="/products/:productID" Component={EachProduct}/>
+            <Route path="/profile" Component={() =>  <Profile data={content}/>} />
           </Routes>
         </main>
       </BrowserRouter>
