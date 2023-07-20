@@ -9,9 +9,9 @@ import Product from "./components/Product";
 import EachProduct from "./components/EachProduct";
 import Profile from "./components/Profile";
 
-
 function App() {
   const [name, setName] = useState("");
+  const [content, setContent] = useState({});
 
   useEffect(() => {
     (async () => {
@@ -22,21 +22,28 @@ function App() {
 
       const content = await response.json();
       setName(content.name);
+      setContent(content);
     })();
-  });
+  }, []);
 
   return (
     <div className="App">
       <BrowserRouter>
-        <Nav name={name} setName={setName}  />
+        <Nav name={content.username} setName={setName} />
         <main className="form-signin">
           <Routes>
             <Route path="/" Component={() => <Home name={name} />} />
-            <Route path="/login" Component={() => <Login setName={setName}/>} />
+            <Route
+              path="/login"
+              Component={() => <Login setName={setName} />}
+            />
             <Route path="/register" Component={Register} />
             <Route path="/list" Component={Product} />
-            <Route path="/products/:productID" Component={EachProduct}/>
-            <Route path="/profile" Component={() =>  <Profile data={content}/>} />
+            <Route path="/products/:productID" Component={EachProduct} />
+            <Route
+              path="/profile"
+              Component={() => <Profile content={content} />}
+            />
           </Routes>
         </main>
       </BrowserRouter>

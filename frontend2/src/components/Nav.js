@@ -39,7 +39,7 @@ const Nav = (props) => {
         </li>
         <li>
           <Link to="/profile" className="nav-link">
-            Profile
+            {props.name}
           </Link>
         </li>
         <li className="nav-item active">

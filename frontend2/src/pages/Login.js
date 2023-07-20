@@ -16,7 +16,6 @@ const Login = (props) => {
     });
 
     setNavigate(true);
-    const content = await response.json();
 
     // try catch this is better method to do thing
 
