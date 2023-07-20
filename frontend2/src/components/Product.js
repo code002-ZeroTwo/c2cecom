@@ -57,44 +57,56 @@ export default function Product() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="ListForm">
+        <h1>List Your Product</h1>
+        <br />
         <select
           id="category"
           name="category"
           onChange={(e) => {
             setInputcategory(e.target.value);
-            console.log(inputcategory)
+            console.log(inputcategory);
           }}
+          className="parentbutton button-35"
         >
-        <option value="">Select Appropriate Category</option>
+          <option value="">Select Appropriate Category</option>
           {category.map((cat) => (
             <option value={cat.id}>{cat.category_name}</option>
           ))}
         </select>
         <br />
-        <br />
         <input
           type="text"
           placeholder="Product Name"
           onChange={(e) => setProductName(e.target.value)}
+          className="InputField"
         />
+        <br />
         <input
           type="number"
           placeholder="Product Price"
           onChange={(e) => setPrice(e.target.value)}
+          className="InputField"
         />
+        <br />
         <input
           type="text"
           placeholder="Product Description"
           onChange={(e) => setDescription(e.target.value)}
+          className="InputField"
         />
+        <br />
         <input
           type="file"
           name="image"
           placeholder="Product Image"
           onChange={handleImageChange}
+          className="FileField"
         />
-        <button type="submit">List Item</button>
+        <br />
+        <button type="submit" className="button-33 parentbutton">
+          List Item
+        </button>
       </form>
     </div>
   );

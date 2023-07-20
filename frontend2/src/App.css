@@ -43,7 +43,7 @@
   margin: 3%;
 }
 
-.product-container{
+.product-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -57,17 +57,17 @@
 }
 
 .card-text {
-  width: auto;  
-  height: 100px; 
+  width: auto;
+  height: 100px;
   padding: 10px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
-.Heading{
+.Heading {
   margin-top: 3%;
 }
 
-.EachProduct{
+.EachProduct {
   display: flex;
   position: absolute;
   margin: 2%;
@@ -76,45 +76,151 @@
   gap: 3%;
   justify-content: center;
   width: 75%;
-
 }
 
-.image{
+.image {
   width: 500px;
 }
 
-.Description{
+.Description {
   text-align: left;
-
 }
 
 .OtherDetails {
   margin-top: 30px;
 }
 
-.Buy{
+.Buy {
   position: absolute;
   right: 15%;
   border-radius: 15%;
-  width: 70px;
-  height: 30px;
-  color: white;
-  background-color:rgb(66, 62, 62);
-  border-color:rgb(66, 62, 62)
 }
 
 .custom-modal {
   /* Your custom styles for the modal content */
-  color: purple;
+  color: rgb(5, 5, 5);
   padding: 20px;
   border-radius: 5px;
 }
 
-.custom-overlay {
-  /* Your custom styles for the modal overlay (the background) */
-  background-color: rgba(155, 20, 20, 0.5);
+.parentbutton {
+  border-radius: 999px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji",
+    NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji",
+    EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue",
+    "Noto Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}
+
+/* CSS */
+.button-34 {
+  background: #333363;
+  box-shadow: #1a1a3b 0 10px 20px -10px;
+}
+
+.button-33 {
+  background: #000000;
+  box-shadow: #1b080a 0 10px 20px -10px;
+}
+
+.popupdiv-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.popupdiv {
+  background-color: rgb(236, 232, 232);
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+  align-items: center;
+  gap: 30px;
+  margin-top: 100px;
+  border-radius: 10%;
+  width: 30%;
+  height: 400px;
+}
+
+.Radiobuttons {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.ListForm {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  margin-left: 30%;
+  border: 1px solid rgb(53, 51, 51);
+  height: 500px;
+  border-radius: 10%;
+}
+
+.button-35 {
+  background-color: rgb(53, 51, 51);
+}
+
+.InputField{
+  height: 40px;
+  width: 75%;
+  border:1px solid white;
+  border-bottom: 1px solid black;
+
+}
+
+.InputField:focus{
+  outline: none;
+}
+
+.FileField{
+  height: auto;
+  width: 75%;
+}
+
+/* Hide the default radio button */
+input[type="radio"] {
+  display: none;
+}
+
+/* Style the custom radio button */
+input[type="radio"] + label {
+  width: 150px;
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 4px;
+  border: 2px solid #bbb;
+  border-radius: 50px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* Style the custom radio button when selected */
+input[type="radio"]:checked + label {
+  background-color: #2196F3;
+  color: #fff;
+  border-color: #2196F3;
+}
+
+.xpos {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}

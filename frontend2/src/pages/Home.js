@@ -82,6 +82,7 @@ const Home = (props) => {
           return (
             <div className="product-container-container">
               <h1 key={category}>{category}</h1>
+              <hr />
               <div className="product-container">
                 {displayByCategory(category)}
               </div>
