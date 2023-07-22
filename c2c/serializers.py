@@ -29,3 +29,8 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id','listed_by','name','category','price','description','quantity','image']
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ["ordered_by","ordered_item"]

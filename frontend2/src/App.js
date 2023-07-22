@@ -39,7 +39,10 @@ function App() {
             />
             <Route path="/register" Component={Register} />
             <Route path="/list" Component={Product} />
-            <Route path="/products/:productID" Component={EachProduct} />
+            <Route
+              path="/products/:productID"
+              Component={() => <EachProduct content={content} />}
+            />
             <Route
               path="/profile"
               Component={() => <Profile content={content} />}

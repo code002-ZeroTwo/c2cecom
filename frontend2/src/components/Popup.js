@@ -1,6 +1,14 @@
 import React from "react";
 
-const Popup = () => {
+const Popup = (props) => {
+  const ProceedTransaction = (e) => {
+    e.preventDefault(); 
+    console.log(props.content);
+    console.log(props.product);
+    // now make a put request to server decreasing the quantity by one 
+    // by the respective user.
+  }
+
   return (
     <div className="popupdiv-container">
       <form className="popupdiv">
@@ -14,7 +22,11 @@ const Popup = () => {
           <br />
         </div>
         <div>
-          <button type="submit" className="parentbutton button-33">
+          <button
+            type="submit"
+            className="parentbutton button-33"
+            onClick={(e) => ProceedTransaction(e)}
+          >
             Proceed
           </button>
         </div>

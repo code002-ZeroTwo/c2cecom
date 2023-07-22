@@ -86,21 +86,50 @@ class LogoutView(APIView):
         return response
 
 
+# order view?
+# model that defines who ordered what?
+class OrderView(APIView):
+    def post(self, request):
+        token = request.COOKIES.get("jwt")
+
+        if not token:
+            raise AuthenticationFailed("unauthenticated")
+
+        try:
+            payload = jwt.decode(token, "secret", algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            raise AuthenticationFailed("unauthenticated")
+
+        user = User.objects.get(id=payload["id"])
+
+        request.data["ordered_by"] = user.id
+
+        serializer = OrderSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ProductView(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
-
-        output = [{
-            "product_id":product.id,
-            "listed_by":product.listed_by.username,
-            "name":product.name,
-            "category":product.category.category_name,
-            "price":product.price,
-            "description":product.description,
-            "quantity":product.quantity,
-            "image":base64.b64encode(product.image.read())
-        } for product in Product.objects.all()]
+        output = [
+            {
+                "product_id": product.id,
+                "listed_by": product.listed_by.username,
+                "name": product.name,
+                "category": product.category.category_name,
+                "price": product.price,
+                "description": product.description,
+                "quantity": product.quantity,
+                "image": base64.b64encode(product.image.read()),
+            }
+            for product in Product.objects.all()
+        ]
 
         return Response(output)
 

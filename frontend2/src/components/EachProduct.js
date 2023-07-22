@@ -10,10 +10,10 @@ const EachProduct = (props) => {
 
   const location = useLocation();
   const productData = location.state;
-  console.log(productData);
 
   useEffect(() => {
     if (productData.quantity > 0) {
+
       setBuyornot("Buy");
       setShowModal(true);
     } else {
@@ -68,7 +68,7 @@ const EachProduct = (props) => {
             onRequestClose={() => setIsOpen(false)}
             className="custom-modal"
           >
-            <Popup />
+            <Popup content={props.content} product={productData}/>
             <button
               onClick={() => setIsOpen(false)}
               className="button-33 parentbutton xpos"
