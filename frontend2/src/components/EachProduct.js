@@ -4,16 +4,21 @@ import ReactModal from "react-modal";
 import Popup from "./Popup";
 
 const EachProduct = (props) => {
+  let menu;
   const [isOpen, setIsOpen] = useState(false);
   const [buyornot, setBuyornot] = useState("");
   const [showmodal, setShowModal] = useState(false);
 
+  const [bought, setBought] = useState(false);
+
   const location = useLocation();
   const productData = location.state;
+  let quantity = productData.quantity;
+
+  const [productquantity, setProductQuantity] = useState(quantity);
 
   useEffect(() => {
-    if (productData.quantity > 0) {
-
+    if (productquantity > 0) {
       setBuyornot("Buy");
       setShowModal(true);
     } else {
@@ -36,6 +41,21 @@ const EachProduct = (props) => {
     const imageUrl = URL.createObjectURL(blob);
     return imageUrl;
   };
+
+  if (bought) {
+    menu = <span> true</span>;
+  } else {
+    menu = <span> false</span>;
+  }
+  
+  useEffect(() => {
+    if (bought) {
+      menu = <p>true</p>;
+    } else {
+      menu = <p>false</p>;
+    }
+  }, [setBought]);
+
   return (
     <>
       <div className="Heading">
@@ -53,7 +73,8 @@ const EachProduct = (props) => {
             <p>Category: {productData.category}</p>
             <p>Price: {productData.price}</p>
             <p>listed_by: {productData.listed_by}</p>
-            <p>Quantity Availiable: {productData.quantity}</p>
+            <p>Quantity Availiable: {productquantity}</p>
+            <p>bought Status:{menu}</p>
           </div>
         </div>
       </div>
@@ -68,7 +89,14 @@ const EachProduct = (props) => {
             onRequestClose={() => setIsOpen(false)}
             className="custom-modal"
           >
-            <Popup content={props.content} product={productData}/>
+            <Popup
+              content={props.content}
+              product={productData}
+              setProductQuantity={setProductQuantity}
+              quantity={quantity}
+              setIsOpen={setIsOpen}
+              setBought={setBought}
+            />
             <button
               onClick={() => setIsOpen(false)}
               className="button-33 parentbutton xpos"

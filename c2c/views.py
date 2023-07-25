@@ -86,29 +86,33 @@ class LogoutView(APIView):
         return response
 
 
-# order view?
-# model that defines who ordered what?
 class OrderView(APIView):
     def post(self, request):
-        token = request.COOKIES.get("jwt")
+        auth_header = request.headers.get("Authorization")
+        if auth_header:
+            # Split the header value to separate the authentication scheme and the token
+            auth_parts = auth_header.split(" ")
+            if len(auth_parts) == 2 and auth_parts[0].lower() == "bearer":
+                jwt_token = auth_parts[1]
 
-        if not token:
-            raise AuthenticationFailed("unauthenticated")
+        if not jwt_token:
+            raise AuthenticationFailed("unauthenticated not valid")
 
-        try:
-            payload = jwt.decode(token, "secret", algorithms=["HS256"])
-        except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed("unauthenticated")
+        product_id = request.data["ordered_item"]
 
-        user = User.objects.get(id=payload["id"])
-
-        request.data["ordered_by"] = user.id
+        # get product and update the product quantity
+        product = Product.objects.get(id=product_id)
+        product.quantity = product.quantity - 1
+        product.save()
 
         serializer = OrderSerializer(data=request.data)
 
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(
+                {"quantity": product.quantity, "success": "success"},
+                status=status.HTTP_200_OK,
+            )
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

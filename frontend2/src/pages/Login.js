@@ -17,22 +17,28 @@ const Login = (props) => {
 
     setNavigate(true);
 
+    const { jwt } = await response.json();
+    console.log(jwt);
+    if (props.token.length === 0 ) {
+      props.setToken(jwt);
+    }
+
     // try catch this is better method to do thing
 
     const getdata = await fetch("http://localhost:8000/", {
-      headers: {"Content-Type":"application/json"},
-      credentials:"include",
-    })
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
 
     const data = await getdata.json();
     console.log(data);
     props.setName(data.name);
-    
-
+    props.setContent(data);
+    console.log("this is navigate" + navigate);
   };
 
   if (navigate) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 
   return (

@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const Home = (props) => {
   const [content, setContent] = useState([]);
 
-  const handleView = () => {};
 
   const decodedImage = (codedval) => {
     const decoded = atob(codedval);

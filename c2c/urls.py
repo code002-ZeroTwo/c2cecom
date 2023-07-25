@@ -14,4 +14,7 @@ urlpatterns = [
 
     # category endpoint
     path('category',views.CategoryView.as_view(),name="category"),
+
+    # order endpoint
+    path('order',views.OrderView.as_view(),name="order"),
 ]
