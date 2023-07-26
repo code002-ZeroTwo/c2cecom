@@ -19,7 +19,11 @@ const Login = (props) => {
 
     const { jwt } = await response.json();
     console.log(jwt);
-    if (props.token.length === 0 ) {
+    try {
+      if (props.token.length() === 0) {
+        props.setToken(jwt);
+      }
+    } catch {
       props.setToken(jwt);
     }
 

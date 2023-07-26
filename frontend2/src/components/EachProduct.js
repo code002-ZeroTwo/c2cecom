@@ -47,7 +47,7 @@ const EachProduct = (props) => {
   } else {
     menu = <span> false</span>;
   }
-  
+
   useEffect(() => {
     if (bought) {
       menu = <p>true</p>;
@@ -67,14 +67,18 @@ const EachProduct = (props) => {
           <h3>Description</h3>
           <hr />
           <p>{productData.description}</p>
+          <h3>Other Details</h3>
+          <hr />
           <div className="OtherDetails">
-            <h3>Other Details</h3>
-            <hr />
-            <p>Category: {productData.category}</p>
-            <p>Price: {productData.price}</p>
-            <p>listed_by: {productData.listed_by}</p>
-            <p>Quantity Availiable: {productquantity}</p>
-            <p>bought Status:{menu}</p>
+            <div>
+              <p>Category: {productData.category}</p>
+              <p>Price: {productData.price}</p>
+              <p>listed_by: {productData.listed_by}</p>
+            </div>
+            <div>
+              <p>Quantity Availiable: {productquantity}</p>
+              <p>bought Status:{menu}</p>
+            </div>
           </div>
         </div>
       </div>

@@ -64,3 +64,6 @@ logs
 
 # migrations folder
 /c2c/migrations
+
+# virtual enviroment
+/venv

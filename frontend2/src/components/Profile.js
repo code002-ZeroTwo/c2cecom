@@ -1,7 +1,6 @@
 import React from "react";
 
 const Profile = (props) => {
-  console.log(props.content.name);
   return (
     <div className="container">
       {props.content && (
@@ -31,6 +30,12 @@ const Profile = (props) => {
             <pre>
               <span className="property">Username </span>
               <span className="value">{props.content.username}</span>
+            </pre>
+          </div>
+          <div>
+            <pre>
+              <span className="property">Contact  </span>
+              <span className="value">{props.content.phone}</span>
             </pre>
           </div>
         </div>
