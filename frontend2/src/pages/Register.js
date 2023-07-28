@@ -11,13 +11,18 @@ function Register() {
   const submit = async (e) => {
     e.preventDefault();
 
-    await fetch("http://localhost:8000/register", {
+    const response = await fetch("http://localhost:8000/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password, username }),
     });
 
-    setNavigate(true);
+    if (response.ok) {
+      setNavigate(true);
+    }
+    else{
+      alert("error occured!!");
+    }
   };
 
   if (navigate) {
@@ -60,7 +65,7 @@ function Register() {
             name="phone"
             pattern="^(01|9[78]\d)-\d{3}-\d{4}$"
             className="form-control"
-            placeholder="Phone Number"
+            placeholder="+97798xxxxxxxx"
             onChange={(e) => setPassword(e.target.value)}
             required
           />

@@ -54,7 +54,7 @@ const EachProduct = (props) => {
     } else {
       menu = <p>false</p>;
     }
-  }, [setBought]);
+  }, [bought]);
 
   return (
     <>
