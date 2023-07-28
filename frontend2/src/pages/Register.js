@@ -30,7 +30,7 @@ function Register() {
   }
 
   return (
-    <div>
+    <div className="LoginForm">
       <form onSubmit={submit}>
         <h1 className="h3 mb-3 fw-normal">Please Register</h1>
         <div>
@@ -79,6 +79,7 @@ function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <br />
 
         <button className="btn btn-primary w-100 py-2" type="submit">
           Sign in

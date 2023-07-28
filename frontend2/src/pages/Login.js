@@ -15,7 +15,12 @@ const Login = (props) => {
       body: JSON.stringify({ email, password }),
     });
 
-    setNavigate(true);
+    if (response.status === 200) {
+      setNavigate(true);
+    }
+    else{
+      alert("login invalid");
+    }
 
     const { jwt } = await response.json();
     console.log(jwt);
@@ -46,7 +51,7 @@ const Login = (props) => {
   }
 
   return (
-    <div>
+    <div className="LoginForm">
       <form onSubmit={submit}>
         <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
         <div className="">
@@ -70,7 +75,7 @@ const Login = (props) => {
             }}
           />
         </div>
-
+        <br />
         <button className="btn btn-primary w-100 py-2" type="submit">
           Sign in
         </button>

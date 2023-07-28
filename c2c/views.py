@@ -22,7 +22,10 @@ class RegisterView(APIView):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
 
 
 class LoginView(APIView):
@@ -49,6 +52,7 @@ class LoginView(APIView):
         response = Response()
 
         response.set_cookie(key="jwt", value=token, httponly=True)
+        response.status_code = 200
         response.data = {"jwt": token}
 
         return response
